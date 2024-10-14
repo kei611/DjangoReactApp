@@ -15,6 +15,7 @@ export default function Page() {
             const { data } = await axios.get('/api/base/products/')
             setProdurcts(data)
         }
+        fetchProducts()
     }, [])
 
     // const [data, setData] = useState({ message: '' })

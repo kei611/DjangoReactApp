@@ -18,14 +18,14 @@ const images = [
   },
 ];
 
-const ProductImages = () => {
+const ProductImages = ({ items}: {items: any}) => {
     const [index, setIndex] = useState(0);
 
     return (
         <div className="">
             <div className="h-[500px] relative">
                 <Image
-                    src={images[index].url}
+                    src={ items }
                     alt=""
                     fill
                     sizes="50vw"

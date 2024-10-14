@@ -1,6 +1,7 @@
 products = [
     {
         '_id': '1',
+        'slug': 'airpods',
         'name': 'Airpods Wireless Bluetooth Headphones',
         'image': '/images/airpods.jpg',
         'description':
@@ -14,6 +15,7 @@ products = [
     },
     {
         '_id': '2',
+        'slug': 'phone',
         'name': 'iPhone 11 Pro 256GB Memory',
         'image': '/images/phone.jpg',
         'description':
@@ -27,6 +29,7 @@ products = [
     },
     {
         '_id': '3',
+        'slug': 'camera',
         'name': 'Cannon EOS 80D DSLR Camera',
         'image': '/images/camera.jpg',
         'description':
@@ -40,6 +43,7 @@ products = [
     },
     {
         '_id': '4',
+        'slug': 'playstation',
         'name': 'Sony Playstation 4 Pro White Version',
         'image': '/images/playstation.jpg',
         'description':
@@ -53,6 +57,7 @@ products = [
     },
     {
         '_id': '5',
+        'slug': 'mouse',
         'name': 'Logitech G-Series Gaming Mouse',
         'image': '/images/mouse.jpg',
         'description':
@@ -66,6 +71,7 @@ products = [
     },
     {
         '_id': '6',
+        'slug': 'alexa',
         'name': 'Amazon Echo Dot 3rd Generation',
         'image': '/images/alexa.jpg',
         'description':
