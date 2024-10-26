@@ -1,6 +1,10 @@
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework import status
+
 from .products import products
+from .models import Product
+from .serializers import ProductSerializer
 
 
 class Backend(APIView):
@@ -8,23 +12,14 @@ class Backend(APIView):
         return Response({"message": "backend"})
 
 class ProductView(APIView):
-    def get_objects(self, ):
-        return Response(products)
 
     def get(self, request, pk=None, format=None):
         if pk is None:
-            return Response(products)
+            products = Product.objects.all()
+            serializer = ProductSerializer(products, many=True)
+            return Response(serializer.data, status.HTTP_200_OK)
         else:
-            product = None
-            for i in products:
-                # if i['_id'] == pk:
-                if i['slug'] == pk:
-                    product = i
-                    break
-            return Response(product)
+            product = Product.objects.get(slug=pk)
+            serializer = ProductSerializer(product, many=False)
+            return Response(serializer.data)
 
-    # def get(self, request, format=None):
-    #     """
-    #    商品の一覧を取得する
-    #     """
-    #     return Response(products)
