@@ -1,4 +1,25 @@
-const CustomizeProducts = () => {
+import { useEffect, useState } from "react"
+import Add from "./Add";
+import { PreloadedStateShapeFromReducersMapObject } from "redux";
+
+const CustomizeProducts = ({
+    productId,
+    variants,
+    productOptions,
+}: {
+        productId: string;
+        variants: products.Variant[];
+        productOptions: products.productOptions[];
+}) => {
+    const [products, setProdurcts] = useState([])
+    useEffect(() => {
+        async function fetchProducts() {
+            const { data } = await axios.get('/api/base/products/')
+            setProdurcts(data)
+        }
+        fetchProducts()
+    }, [])
+
     return (
         <div className='flex flex-col gap-6'>
             <h4 className="font-medium">Choose a color</h4>

@@ -1,8 +1,9 @@
 "use client"
 
 import { useState } from "react";
+import { useShoppingCart } from "use-shopping-cart";
 
-const Add = () => {
+const Add = ({product}) => {
     const [quantity, setQuantity] = useState(1);
 
     const stock = 4
@@ -15,6 +16,24 @@ const Add = () => {
             setQuantity((prev) => prev + 1);
         }
     };
+
+    const { addItem } = useShoppingCart();
+
+    const decreaseQuantity = () => {
+        if (quantity > 1) {
+            setQuantity(quantity - 1)
+        }
+    }
+
+    const increaseQuantity = () => {
+        setQuantity(quantity + 1)
+    }
+
+    const addToCart = () => {
+        addItem(product, {count: quantity})
+        // console.log(product.name)
+        setQuantity(1)
+    }
 
     return (
         <div className='flex flex-col gap-4'>
@@ -29,7 +48,7 @@ const Add = () => {
                 <div className="text-xs">
                     Only<span className="text-orange-500"> 4 items </span>left! <br />{"Dont't"}{""} miss it</div>
                 </div>
-                <button className="w-36 text-sm rounded-3xl ring-1 ring-red text-red py-2 px-4 hover:bg-red hover:text-white disabled:cursor-not-allwed disabled:bg-pink-200 disabled:text-white disabled:ring-none">
+                <button onClick={()=>addToCart()} className="w-36 text-sm rounded-3xl ring-1 ring-red text-red py-2 px-4 hover:bg-red hover:text-white disabled:cursor-not-allwed disabled:bg-pink-200 disabled:text-white disabled:ring-none">
                     Add to Cart
                 </button>
             </div>

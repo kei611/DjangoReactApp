@@ -18,16 +18,6 @@ export default function Page() {
         fetchProducts()
     }, [])
 
-    // const [data, setData] = useState({ message: '' })
-
-    // useEffect(() => {
-    //     axios.get('/api/base/backend')
-    //         .then((res) => res.data)
-    //         .then((data) => {
-    //             setData(data)
-    //         })
-    // }, [])
-
     return (
         <div>
             <h1>Products</h1>
