@@ -5,6 +5,7 @@ from rest_framework import status
 import stripe
 import datetime
 import json
+import os
 
 from .models import Product, ProductVariant, Category, ProductGallery, Order
 from .serializers import ProductSerializer, ProductVariantSerializer, CategorySerializer, ProductGallerySerializer
@@ -13,8 +14,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.conf import settings
 
-stripe.api_key="sk_test_51KpPxCBpT7ryj6PXw9gqGEVujrgWlv7tNnw8eHSvbXeDN4Psj359XLSt7c77o33T3wX4E4s09QpycS1Kt7Tm1G7U001VAlmwL3"
-
+stripe.api_key=os.getenv("STRIPE_SECRET_KEY")
 
 class Backend(APIView):
     def get(self, request, format=None):
@@ -106,7 +106,7 @@ def stripe_webhook(request):
     event = None
 
     # StripeのWebhook Secretを設定
-    endpoint_secret = "whsec_a88282272a5207986d9cfd2515d32f1994b8011188e716d578a55fe6a47d9968"
+    endpoint_secret=os.getenv("ENDPOINT_SECRET")
 
     try:
         event = stripe.Webhook.construct_event(
