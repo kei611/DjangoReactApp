@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useShoppingCart } from "use-shopping-cart";
 
-const Add = ({product}) => {
+const Add = ({product, variant}) => {
     const [quantity, setQuantity] = useState(1);
 
     const stock = 4
@@ -30,9 +30,15 @@ const Add = ({product}) => {
     }
 
     const addToCart = () => {
-        addItem(product, {count: quantity})
-        // console.log(product.name)
+        addItem(product, {
+            count: quantity,
+            product_metadata: {
+                color: variant.variation_color,
+                size: variant.variation_size
+            }
+        })
         setQuantity(1)
+        console.log("variant: " + variant.variation_size)
     }
 
     return (

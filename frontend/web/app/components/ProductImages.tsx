@@ -3,29 +3,14 @@
 import Image from "next/image";
 import { useState } from "react";
 
-const images = [
-  {
-    id: 1,
-    url: "/SadBIG.jpg",
-  },
-  {
-    id: 2,
-      url: "/ReflectTshirt.jpg",
-  },
-  {
-    id: 3,
-    url: "/Sticker.jpg",
-  },
-];
-
-const ProductImages = ({ items}: {items: any}) => {
+const ProductImages = ({ item, images }: { item: any; images: any; }) => {
     const [index, setIndex] = useState(0);
 
     return (
         <div className="">
             <div className="h-[500px] relative">
                 <Image
-                    src={ items }
+                    src={item}
                     alt=""
                     fill
                     sizes="50vw"
@@ -40,7 +25,7 @@ const ProductImages = ({ items}: {items: any}) => {
                         onClick={() => setIndex(i)}
                     >
                         <Image
-                            src={img.url}
+                            src={img.image}
                             alt=""
                             fill
                             sizes="30vw"

@@ -25,9 +25,6 @@ export default function CartItem({ item }) {
                     {/* TITLE */}
                     <div className='flex items-center justify-between gap-8'>
                         <h3 className="font-semibold">{ name }</h3>
-                        {/* <div className='p-1 bg-gray-50 rounded-sm'>
-                            {formatCurrencyString({value: price*quantity, currency: 'JPY'})}
-                        </div> */}
                         <div className="p-1 bg-gray-50 rounded-sm flex items-center gap-2">
                             {item.quantity && item.quantity > 1 && (
                                 <div className="text-xs text-green-500">

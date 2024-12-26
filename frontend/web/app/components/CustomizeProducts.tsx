@@ -1,48 +1,103 @@
 import { useEffect, useState } from "react"
 import Add from "./Add";
-import { PreloadedStateShapeFromReducersMapObject } from "redux";
+import axios from "axios";
 
-const CustomizeProducts = ({
-    productId,
-    variants,
-    productOptions,
-}: {
-        productId: string;
-        variants: products.Variant[];
-        productOptions: products.productOptions[];
-}) => {
-    const [products, setProdurcts] = useState([])
+const CustomizeProducts = ({ slug, }: { slug: string; }) => {
+
+    const [selectedOptions, setSelectedOptions] = useState<{ [key: string]: string; }>({});
+
+    const [product, setProduct] = useState([])
     useEffect(() => {
-        async function fetchProducts() {
-            const { data } = await axios.get('/api/base/products/')
-            setProdurcts(data)
+        async function fetchProduct() {
+            const { data } = await axios.get(`/api/base/products/${slug}`)
+            setProduct(data)
         }
-        fetchProducts()
+        fetchProduct()
     }, [])
+
+    const handleOptionSelect = (optionType: string, choice: string) => {
+        setSelectedOptions((prev) => ({ ...prev, [optionType]: choice }));
+    };
+
+    const [variations, setVariations] = useState([])
+    useEffect(() => {
+        async function fetchVariations() {
+            const { data } = await axios.get(`/api/base/variations/${slug}`)
+            setVariations(data)
+        }
+        fetchVariations()
+    }, [])
+
+    const [selectedVariant, setSelectedVariant] = useState(null);
+    useEffect(() => {
+        const variant = variations.find((v) => {
+            const variantChoices_size = v.variation_size;
+            const variantChoices_color = v.variation_color;
+            // サイズまたは色の情報がない場合は除外
+            if (!variantChoices_size || !variantChoices_color) return false;
+            // selectedOptionsの各選択肢が、variantの選択肢（サイズ、色）と一致するかチェック
+            return Object.entries(selectedOptions).every(([key, value]) => {
+                if (key === 'Size') {
+                    return variantChoices_size === value;  // サイズが一致するか
+                }
+                if (key === 'Color') {
+                    return variantChoices_color === value;  // 色が一致するか
+                }
+                return false;  // その他の選択肢があれば、対応するロジックを追加する
+            });
+        });
+        setSelectedVariant(variant);  // 見つかったバリアントを状態にセット
+    }, [selectedOptions]);  // selectedOptions が変更されるたびに実行
+
+    const disabled = false;
+    const colors = Array.from(new Set(variations.map((v) => v.variation_color)));
+    const sizes = Array.from(new Set(variations.map((v) => v.variation_size)));
 
     return (
         <div className='flex flex-col gap-6'>
+            <div className="flex flex-col gap-4" key="color">
             <h4 className="font-medium">Choose a color</h4>
             <ul className='flex items-center gap-3'>
-                <li className="w-8 h-8 rounded-full ring-1 ring-gray-300 cursor-pointer relative bg-red-500">
-                    <div className='absolute w-10 h-10 rounded-full ring-2 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'/>
-                </li>
-                <li className="w-8 h-8 rounded-full ring-1 ring-gray-300 cursor-pointer relative bg-blue-500"></li>
-                <li className="w-8 h-8 rounded-full ring-1 ring-gray-300 cursor-not-allowed relative bg-green-500"></li>
-                <div className='absolute w-10 h-[2px] bg-red-400 rotate-45 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'/>
+                {colors.map((color) => {
+                    const selected_color = selectedOptions["Color"] === color;
+                    const clickHandler_color = disabled
+                        ? undefined
+                        : () => handleOptionSelect("Color", color!);
+                    return (
+                        <li key={ color } className="ring-1 ring-red text-red rounded-md py-1 px-4 text-sm" style={{
+                            cursor: disabled ? "not-allowed" : "pointer",
+                            backgroundColor: selected_color ? "#f35c7a" : disabled ? "#FBCFE8" : "white",
+                            color: selected_color || disabled ? "white" : "f35c7a",
+                            boxShadow: disabled ? "none" : "",
+                        }} onClick={clickHandler_color}>
+                            {color}
+                        </li>
+                    )
+                })}
             </ul>
+            </div>
+            <div className="flex flex-col gap-4" key="size">
             <h4 className="font-medium">Choose a size</h4>
             <ul className='flex items-center gap-3'>
-            <li className="ring-1 ring-red text-red rounded-md py-1 px-4 text-sm cursor-pointer">
-                Small
-            </li>
-            <li className="ring-1 ring-red text-white bg-red rounded-md py-1 px-4 text-sm cursor-pointer">
-                Medium
-            </li>
-            <li className="ring-1 ring-pink-200 text-white bg-pink-200 rounded-md py-1 px-4 text-sm cursor-not-allowed">
-                Large
-            </li>
+                {sizes.map((size) => {
+                    const selected = selectedOptions["Size"] === size;
+                    const clickHandler = disabled
+                        ? undefined
+                        : () => handleOptionSelect("Size", size!);
+                    return (
+                        <li key={ size } className="ring-1 ring-red text-red rounded-md py-1 px-4 text-sm" style={{
+                            cursor: disabled ? "not-allowed" : "pointer",
+                            backgroundColor: selected ? "#f35c7a" : disabled ? "#FBCFE8" : "white",
+                            color: selected || disabled ? "gray" : "f35c7a",
+                            boxShadow: disabled ? "none" : "",
+                        }} onClick={clickHandler}>
+                            {size}
+                        </li>
+                    )
+                })}
             </ul>
+            </div>
+            <Add product={product} variant={selectedVariant}/>
         </div>
     )
 }

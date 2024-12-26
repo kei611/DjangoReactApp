@@ -4,8 +4,7 @@ import axios from 'axios'
 
 export default function CheckoutButton() {
     const [status, setStatus] = useState('idle')
-    const { redirectToCheckout, cartCount, totalPrice, cartDetails } =
-        useShoppingCart()
+    const { redirectToCheckout, cartCount, totalPrice, cartDetails } = useShoppingCart()
 
     async function handleClick(event) {
         event.preventDefault()

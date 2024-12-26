@@ -1,10 +1,5 @@
 "use client";
 
-import Image from "next/image";
-// import { useCartStore } from "@/hooks/useCartStore";
-// import { media as wixMedia } from "@wix/sdk";
-// import { useWixClient } from "@/hooks/useWixClient";
-// import { currentCart } from "@wix/ecom";
 import { useShoppingCart } from 'use-shopping-cart'
 import CartItem from './CartItem'
 import CheckoutButton from './CheckoutButton'
@@ -37,9 +32,9 @@ const CartModal = () => {
                     {/* List */}
                     <div className='flex flex-col gap-8'>
                         {/* ITEM */}
-                            {mergedEntries.map((entry) => (
-                                <CartItem key={entry.name} item={entry} />
-                            ))}
+                        {mergedEntries.map((entry) => (
+                            <CartItem key={entry.name} item={entry} />
+                        ))}
 
                     </div>
                     {/* Bottom */}
@@ -53,12 +48,7 @@ const CartModal = () => {
                         </p>
                         <div className='flex justify-between text-sm'>
                             <button className="rounded-md py-3 px-4 ring-1 ring-gray-300">View Cart</button>
-                            {/* <button
-                                    className="rounded-md py-3 px-4 bg-black text-white"
-                                    onClick={() => redirectToCheckout()}>
-                                    Checkout
-                                </button> */}
-                                <CheckoutButton />
+                            <CheckoutButton />
                         </div>
                     </div>
                 </>

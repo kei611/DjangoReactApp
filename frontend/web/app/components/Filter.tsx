@@ -1,4 +1,3 @@
-
 const Filter = () => {
     return (
         <div className='mt-12 flex justify-between'>
